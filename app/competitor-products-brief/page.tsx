@@ -66,55 +66,26 @@ export default function CompetitorProductsBriefPage() {
             Instantly Know Exactly How You Stack Up Against Top Competitors
           </h1>
           <p className="text-sm text-muted-foreground sm:text-base">
-            Enter basic product information — get a ready-made competitive analysis that shows where
-            you win, why you should raise prices, and what opportunities you're missing.
+            Enter basic product information — get a ready-made competitive analysis that shows where you win, why you should raise prices, and what opportunities you're missing.
           </p>
         </div>
       </header>
 
-      <section className="space-y-6 rounded-3xl bg-[#f8f9ff] p-10 shadow-sm">
-        <div className="space-y-2">
-          <h2 className="text-2xl font-semibold text-foreground">What you&apos;ll get</h2>
-          <p className="text-sm text-muted-foreground">
-            A battle-ready summary that gives your product, marketing, and leadership teams the edge.
-          </p>
-        </div>
-        <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {deliverableHighlights.map((item) => (
-            <li
-              key={item}
-              className="flex flex-col gap-3 rounded-2xl border border-transparent bg-white/70 p-6 shadow-sm"
-            >
-              <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
-                <CheckCircle2 className="h-4 w-4" />
+      <section className="space-y-6 rounded-3xl border border-dashed border-primary/40 bg-primary/5 p-10 shadow-sm">
+        <h2 className="text-2xl font-semibold text-primary">How it works</h2>
+        <div className="grid gap-6 sm:grid-cols-3">
+          {howItWorks.map((step, index) => (
+            <div key={step.title} className="space-y-3">
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
+                {String(index + 1).padStart(2, "0")}
               </span>
-              <p className="text-sm text-foreground">{item}</p>
-            </li>
-          ))}
-        </ul>
-        {additionalDeliverables.length > 0 && (
-          <div className="flex items-start gap-3 rounded-2xl border border-primary/20 bg-primary/5 p-4 text-sm text-muted-foreground">
-            <CheckCircle2 className="mt-1 h-4 w-4 text-primary" />
-            <span>{additionalDeliverables[0]}</span>
-          </div>
-        )}
-      </section>
-
-      <section className="grid gap-4 lg:grid-cols-3">
-        {sellingPoints.map((point) => (
-          <article
-            key={point.title}
-            className="flex h-full flex-col gap-4 rounded-2xl border border-border bg-card p-6 shadow-sm"
-          >
-            <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-              <point.icon className="h-5 w-5" />
-            </span>
-            <div className="space-y-2">
-              <h3 className="text-base font-semibold text-foreground">{point.title}</h3>
-              <p className="text-sm text-muted-foreground">{point.description}</p>
+              <div className="space-y-2">
+                <h3 className="text-base font-medium text-foreground">{step.title}</h3>
+                <p className="text-sm text-muted-foreground">{step.description}</p>
+              </div>
             </div>
-          </article>
-        ))}
+          ))}
+        </div>
       </section>
 
       <section className="flex justify-center">
@@ -217,13 +188,7 @@ export default function CompetitorProductsBriefPage() {
                 <span className="text-sm font-medium text-foreground">Research depth</span>
                 <div className="flex gap-3">
                   <label className="flex flex-1 cursor-pointer">
-                    <input
-                      type="radio"
-                      name="depth"
-                      value="basic"
-                      className="peer sr-only"
-                      defaultChecked
-                    />
+                    <input type="radio" name="depth" value="basic" className="peer sr-only" defaultChecked />
                     <span className="flex h-10 w-full items-center justify-center gap-2 rounded-md border border-border bg-background px-3 text-sm font-medium text-foreground transition-colors hover:border-ring peer-checked:border-primary peer-checked:bg-primary/10 peer-checked:text-primary">
                       Basic (3-5)
                     </span>
@@ -279,23 +244,6 @@ export default function CompetitorProductsBriefPage() {
             </div>
           </fieldset>
 
-          <section className="space-y-6 rounded-2xl border border-dashed border-primary/40 bg-primary/5 p-8">
-            <h3 className="text-lg font-semibold text-primary">How it works</h3>
-            <div className="grid gap-6 sm:grid-cols-3">
-              {howItWorks.map((step, index) => (
-                <div key={step.title} className="space-y-3">
-                  <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <div className="space-y-2">
-                    <h4 className="text-base font-medium text-foreground">{step.title}</h4>
-                    <p className="text-sm text-muted-foreground">{step.description}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
           <button
             type="submit"
             className="inline-flex w-full items-center justify-center rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-xs transition-all hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
@@ -306,6 +254,51 @@ export default function CompetitorProductsBriefPage() {
             * Powered by Claude 4.5 Sonnet + Perplexity Sonar Pro. Each request uses real credits.
           </p>
         </form>
+      </section>
+
+      <section className="space-y-6 rounded-3xl bg-[#f8f9ff] p-10 shadow-sm">
+        <div className="space-y-2">
+          <h2 className="text-2xl font-semibold text-foreground">What you&apos;ll get</h2>
+          <p className="text-sm text-muted-foreground">
+            A battle-ready summary that gives your product, marketing, and leadership teams the edge.
+          </p>
+        </div>
+        <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {deliverableHighlights.map((item) => (
+            <li
+              key={item}
+              className="flex flex-col gap-3 rounded-2xl border border-transparent bg-white/70 p-6 shadow-sm"
+            >
+              <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <CheckCircle2 className="h-4 w-4" />
+              </span>
+              <p className="text-sm text-foreground">{item}</p>
+            </li>
+          ))}
+        </ul>
+        {additionalDeliverables.length > 0 && (
+          <div className="flex items-start gap-3 rounded-2xl border border-primary/20 bg-primary/5 p-4 text-sm text-muted-foreground">
+            <CheckCircle2 className="mt-1 h-4 w-4 text-primary" />
+            <span>{additionalDeliverables[0]}</span>
+          </div>
+        )}
+      </section>
+
+      <section className="grid gap-4 lg:grid-cols-3">
+        {sellingPoints.map((point) => (
+          <article
+            key={point.title}
+            className="flex h-full flex-col gap-4 rounded-2xl border border-border bg-card p-6 shadow-sm"
+          >
+            <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <point.icon className="h-5 w-5" />
+            </span>
+            <div className="space-y-2">
+              <h3 className="text-base font-semibold text-foreground">{point.title}</h3>
+              <p className="text-sm text-muted-foreground">{point.description}</p>
+            </div>
+          </article>
+        ))}
       </section>
     </div>
   );
