@@ -12,10 +12,22 @@ type SidebarProps = {
   onClose: () => void;
 };
 
+const EXPANDED_SECTION_TITLES = new Set([
+  "Resources",
+  "Agentic Tools",
+  "Content Creation",
+  "Content Creation Copilots",
+]);
+
 export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
   const [expandedSections, setExpandedSections] = React.useState<number[]>(() =>
-    navigationSections.map((_, index) => index)
+    navigationSections.reduce<number[]>((accumulator, section, index) => {
+      if (EXPANDED_SECTION_TITLES.has(section.title)) {
+        accumulator.push(index);
+      }
+      return accumulator;
+    }, [])
   );
 
   const toggleSection = (index: number) => {
@@ -70,6 +82,11 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
             <ul className="space-y-4">
               {navigationSections.map((section, index) => {
                 const isExpanded = expandedSections.includes(index);
+                const displayTitle =
+                  section.title === "Content Creation Copilots"
+                    ? "Content Creation"
+                    : section.title;
+
                 return (
                   <li key={section.title}>
                     <button
@@ -81,7 +98,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                     >
                       <span className="flex items-center gap-2">
                         <section.icon className="h-4 w-4" />
-                        {section.title}
+                        {displayTitle}
                       </span>
                       <ChevronDown
                         className={clsx(
