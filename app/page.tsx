@@ -1,5 +1,4 @@
 import { ToolGrid } from "@/components/ToolGrid";
-import { tools } from "@/lib/tools";
 
 export default function HomePage() {
   return (
@@ -12,7 +11,7 @@ export default function HomePage() {
           Automate research, content, and campaigns with AI agents
         </h1>
         <p className="mx-auto max-w-2xl text-base text-muted-foreground sm:text-lg">
-          Content Labs 416 transforms briefs and ideas into concrete artifacts ready to launch — from competitive reviews to lead generation pages.
+          Content Labs 416 transforms briefs and ideas into ready-to-launch assets—from competitive intelligence to high-converting landing pages.
         </p>
       </section>
 
@@ -21,24 +20,24 @@ export default function HomePage() {
           Tools and copilots
         </h2>
         <p className="text-sm text-muted-foreground">
-          Drive growth: research competitors, gather insights, and generate campaigns from a single hub.
+          Manage growth from a single command center: explore competitors, surface market insights, and spin up campaigns in minutes.
         </p>
       </section>
 
-      <ToolGrid tools={tools} />
+      <ToolGrid />
 
       <section className="grid gap-6 rounded-2xl border border-border bg-gradient-to-br from-primary/10 via-accent/10 to-secondary/30 p-8 sm:gap-8 sm:p-12">
         <div className="space-y-2">
           <h3 className="text-2xl font-semibold text-foreground">
-            Ready to integrate AI into marketing?
+            Ready to bring AI into your marketing workflow?
           </h3>
           <p className="max-w-2xl text-sm text-muted-foreground">
-            Compile key briefs, collect competitor data, and prepare full-scale campaigns faster than a team of multiple specialists.
+            Collect the inputs, uncover the competitive landscape, and deliver launch-ready campaigns faster than a full team of specialists.
           </p>
         </div>
         <div className="flex flex-wrap gap-3">
           <a
-            href="mailto:hello@contentlabs416.com"
+            href="mailto:support@gorilladome.com"
             className="inline-flex items-center justify-center rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground shadow-xs transition-all hover:translate-y-0.5 hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             Contact the team
