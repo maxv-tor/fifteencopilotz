@@ -3,10 +3,14 @@
 import * as React from "react";
 import clsx from "clsx";
 import { Search } from "lucide-react";
-import type { ToolCategory } from "@/lib/tools";
-import { toolFilters, tools } from "@/lib/tools";
+import type { Tool, ToolCategory } from "@/lib/tools";
+import { toolFilters, tools as defaultTools } from "@/lib/tools";
 
-export function ToolGrid() {
+type ToolGridProps = {
+  tools?: Tool[];
+};
+
+export function ToolGrid({ tools = defaultTools }: ToolGridProps) {
   const [searchQuery, setSearchQuery] = React.useState("");
   const [selectedCategory, setSelectedCategory] =
     React.useState<ToolCategory>("all");
@@ -22,7 +26,7 @@ export function ToolGrid() {
 
       return matchesCategory && matchesSearch;
     });
-  }, [selectedCategory, searchQuery]);
+  }, [tools, selectedCategory, searchQuery]);
 
   return (
     <div className="space-y-6">
