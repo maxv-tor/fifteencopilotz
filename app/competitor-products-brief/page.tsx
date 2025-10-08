@@ -1,3 +1,4 @@
+import type { MouseEvent } from "react";
 import { CheckCircle2, Bot, LineChart, Users } from "lucide-react";
 
 const sellingPoints = [
@@ -46,7 +47,8 @@ const howItWorks = [
   {
     title: "Review & share",
     description:
-      "Receive a polished PDF and shareable link in your inbox. Loop in product, marketing, or leadership instantly."
+      "Receive a polished PDF and shareable link in your inbox. Loop in product, marketing, or leadership instantly.",
+    showSampleLink: true
   }
 ];
 
@@ -55,6 +57,15 @@ export const metadata = {
 };
 
 export default function CompetitorProductsBriefPage() {
+  const handleReportSampleClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    window.open(
+      "/competitor-products-brief/report-sample-html.html",
+      "_blank",
+      "noopener,noreferrer,width=1200,height=800"
+    );
+  };
+
   return (
     <div className="space-y-8">
       <header className="space-y-3">
@@ -82,7 +93,21 @@ export default function CompetitorProductsBriefPage() {
               </span>
               <div className="space-y-1.5">
                 <h3 className="text-base font-medium text-foreground">{step.title}</h3>
-                <p className="text-sm text-muted-foreground">{step.description}</p>
+                <p className="text-sm text-muted-foreground">
+                  {step.description}
+                  {step.showSampleLink && (
+                    <>
+                      {" "}
+                      <a
+                        href="/competitor-products-brief/report-sample-html.html"
+                        onClick={handleReportSampleClick}
+                        className="font-semibold text-primary underline-offset-4 hover:underline"
+                      >
+                        Report Sample
+                      </a>
+                    </>
+                  )}
+                </p>
               </div>
             </div>
           ))}
