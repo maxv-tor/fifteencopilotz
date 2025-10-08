@@ -56,30 +56,31 @@ export const metadata = {
 
 export default function CompetitorProductsBriefPage() {
   return (
-    <div className="space-y-12">
-      <header className="space-y-4">
+    <div className="space-y-8">
+      <header className="space-y-3">
         <span className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1 text-2xs font-semibold uppercase tracking-wide text-muted-foreground">
           Agentic Tool
         </span>
-        <div className="space-y-3">
+        <div className="space-y-2.5">
           <h1 className="text-3xl font-bold text-foreground sm:text-4xl">
             Instantly Know Exactly How You Stack Up Against Top Competitors
           </h1>
           <p className="text-sm text-muted-foreground sm:text-base">
-            Enter basic product information — get a ready-made competitive analysis that shows where you win, why you should raise prices, and what opportunities you're missing.
+            Enter basic product information — get a ready-made competitive analysis that shows where
+            you win, why you should raise prices, and what opportunities you're missing.
           </p>
         </div>
       </header>
 
-      <section className="space-y-6 rounded-3xl border border-dashed border-primary/40 bg-primary/5 p-10 shadow-sm">
-        <h2 className="text-2xl font-semibold text-primary">How it works</h2>
-        <div className="grid gap-6 sm:grid-cols-3">
+      <section className="space-y-4 rounded-3xl border border-dashed border-primary/40 bg-primary/5 p-6 shadow-sm md:p-7">
+        <h2 className="text-xl font-semibold text-primary sm:text-2xl">How it works</h2>
+        <div className="grid gap-4 sm:grid-cols-3 md:gap-5">
           {howItWorks.map((step, index) => (
-            <div key={step.title} className="space-y-3">
-              <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
+            <div key={step.title} className="space-y-2.5">
+              <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary sm:h-10 sm:w-10 sm:text-sm">
                 {String(index + 1).padStart(2, "0")}
               </span>
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 <h3 className="text-base font-medium text-foreground">{step.title}</h3>
                 <p className="text-sm text-muted-foreground">{step.description}</p>
               </div>
@@ -89,8 +90,8 @@ export default function CompetitorProductsBriefPage() {
       </section>
 
       <section className="flex justify-center">
-        <form className="w-full max-w-3xl space-y-8 rounded-3xl border border-border bg-card p-8 shadow-sm">
-          <fieldset className="space-y-6 rounded-2xl border border-border/60 bg-background/60 p-6">
+        <form className="w-full max-w-3xl space-y-8 rounded-3xl border border-border bg-card p-7 shadow-sm md:p-8">
+          <fieldset className="space-y-6 rounded-2xl border border-border/60 bg-background/60 p-5 md:p-6">
             <legend className="px-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
               Product basics
             </legend>
@@ -168,7 +169,7 @@ export default function CompetitorProductsBriefPage() {
             </div>
           </fieldset>
 
-          <fieldset className="space-y-6 rounded-2xl border border-border/60 bg-background/60 p-6">
+          <fieldset className="space-y-6 rounded-2xl border border-border/60 bg-background/60 p-5 md:p-6">
             <legend className="px-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
               Product details
             </legend>
@@ -183,7 +184,7 @@ export default function CompetitorProductsBriefPage() {
                 className="mt-1 min-h-[110px] w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:border-ring focus:ring-2 focus:ring-ring"
               />
             </div>
-            <div className="grid gap-6 sm:grid-cols-2">
+            <div className="grid gap-5 sm:grid-cols-2">
               <div className="sm:col-span-2 space-y-2">
                 <span className="text-sm font-medium text-foreground">Research depth</span>
                 <div className="flex gap-3">
@@ -256,18 +257,18 @@ export default function CompetitorProductsBriefPage() {
         </form>
       </section>
 
-      <section className="space-y-6 rounded-3xl bg-[#f8f9ff] p-10 shadow-sm">
-        <div className="space-y-2">
-          <h2 className="text-2xl font-semibold text-foreground">What you&apos;ll get</h2>
+      <section className="space-y-4 rounded-3xl bg-[#f8f9ff] p-6 shadow-sm md:space-y-5 md:p-7">
+        <div className="space-y-1.5">
+          <h2 className="text-xl font-semibold text-foreground sm:text-2xl">What you&apos;ll get</h2>
           <p className="text-sm text-muted-foreground">
             A battle-ready summary that gives your product, marketing, and leadership teams the edge.
           </p>
         </div>
-        <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {deliverableHighlights.map((item) => (
             <li
               key={item}
-              className="flex flex-col gap-3 rounded-2xl border border-transparent bg-white/70 p-6 shadow-sm"
+              className="flex flex-col gap-3 rounded-2xl border border-transparent bg-white/70 p-5 shadow-sm"
             >
               <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
                 <CheckCircle2 className="h-4 w-4" />
