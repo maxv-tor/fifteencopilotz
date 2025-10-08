@@ -3,15 +3,10 @@
 import * as React from "react";
 import clsx from "clsx";
 import { Search } from "lucide-react";
-import type { Tool, ToolCategory } from "@/lib/tools";
-import { toolFilters } from "@/lib/tools";
-import Link from "next/link";
+import type { ToolCategory } from "@/lib/tools";
+import { toolFilters, tools } from "@/lib/tools";
 
-type ToolGridProps = {
-  tools: Tool[];
-};
-
-export function ToolGrid({ tools }: ToolGridProps) {
+export function ToolGrid() {
   const [searchQuery, setSearchQuery] = React.useState("");
   const [selectedCategory, setSelectedCategory] =
     React.useState<ToolCategory>("all");
@@ -27,7 +22,7 @@ export function ToolGrid({ tools }: ToolGridProps) {
 
       return matchesCategory && matchesSearch;
     });
-  }, [tools, selectedCategory, searchQuery]);
+  }, [selectedCategory, searchQuery]);
 
   return (
     <div className="space-y-6">
@@ -37,7 +32,7 @@ export function ToolGrid({ tools }: ToolGridProps) {
           <input
             value={searchQuery}
             onChange={(event) => setSearchQuery(event.target.value)}
-            placeholder="Quick search for tools..."
+            placeholder="Quickly search across tools..."
             className="h-10 w-full rounded-lg border border-border bg-background pl-10 pr-3 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-ring focus:ring-2 focus:ring-ring"
             aria-label="Search tools"
           />
@@ -84,7 +79,7 @@ export function ToolGrid({ tools }: ToolGridProps) {
                     </h3>
                     {isComingSoon && (
                       <span className="rounded-full bg-secondary px-2 py-0.5 text-2xs font-medium text-secondary-foreground">
-                        Coming Soon
+                        Coming soon
                       </span>
                     )}
                   </div>
@@ -108,16 +103,16 @@ export function ToolGrid({ tools }: ToolGridProps) {
                 </div>
                 {isComingSoon ? (
                   <span className="text-xs font-medium text-muted-foreground">
-                    Preparing release
+                    In development
                   </span>
                 ) : (
-                  <Link
+                  <a
                     href={tool.href}
                     className="inline-flex items-center gap-1 text-sm font-semibold text-primary transition-transform hover:translate-x-1"
                   >
-                    {tool.cta ?? "Go"}
+                    {tool.cta ?? "Open"}
                     <span aria-hidden>→</span>
-                  </Link>
+                  </a>
                 )}
               </div>
             </div>
@@ -125,7 +120,7 @@ export function ToolGrid({ tools }: ToolGridProps) {
         })}
         {filteredTools.length === 0 && (
           <div className="col-span-full rounded-xl border border-dashed border-border/80 bg-background/40 p-8 text-center text-sm text-muted-foreground">
-            No tools found. Change filters or try a different query.
+            No tools match your filters. Try adjusting the category or using another search term.
           </div>
         )}
       </div>
