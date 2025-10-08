@@ -5,7 +5,7 @@ const sellingPoints = [
     icon: Bot,
     title: "AI Orchestration",
     description:
-      "Claude 4.5 Sonnet + Perplexity Sonar Pro combine open data and fresh market signals."
+      "Claude 4.5 Sonnet + Perplexity Sonar Pro combine open data available on search."
   },
   {
     icon: LineChart,
