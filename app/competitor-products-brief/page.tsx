@@ -62,10 +62,10 @@ export default function CompetitorProductsBriefPage() {
           Agentic Tool
         </span>
         <div className="space-y-2.5">
-          <h1 className="text-3xl font-bold text-foreground sm:text-4xl">
+          <h1 className="text-center text-3xl font-bold text-foreground sm:text-4xl">
             Instantly Know Exactly How You Stack Up Against Top Competitors
           </h1>
-          <p className="text-sm text-muted-foreground sm:text-base">
+          <p className="text-center text-sm text-muted-foreground sm:text-base">
             Enter basic product information — get a ready-made competitive analysis that shows where
             you win, why you should raise prices, and what opportunities you're missing.
           </p>
@@ -156,8 +156,11 @@ export default function CompetitorProductsBriefPage() {
               </div>
             </div>
             <div>
-              <label className="text-sm font-medium text-foreground" htmlFor="email">
-                Email (to receive report) *
+              <label
+                className="text-sm font-medium text-foreground"
+                htmlFor="email"
+              >
+                Your Email Address (Receive your full competitor report via email - plus a personal link for quick review) *
               </label>
               <input
                 id="email"
@@ -245,15 +248,15 @@ export default function CompetitorProductsBriefPage() {
             </div>
           </fieldset>
 
+          <p className="text-center text-2xl font-bold text-muted-foreground">
+            * Powered by Claude 4.5 Sonnet + Perplexity Sonar Pro. Each request uses real credits.
+          </p>
           <button
             type="submit"
             className="inline-flex w-full items-center justify-center rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-xs transition-all hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             Generate Analysis
           </button>
-          <p className="text-xs text-muted-foreground">
-            * Powered by Claude 4.5 Sonnet + Perplexity Sonar Pro. Each request uses real credits.
-          </p>
         </form>
       </section>
 
