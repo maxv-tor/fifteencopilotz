@@ -1,5 +1,5 @@
 import { CheckCircle2, Bot, LineChart, Users } from "lucide-react";
-import { ReportSampleLink } from '@/components/report-sample-link';
+import { ReportSampleLink } from "@/components/report-sample-link";
 
 const sellingPoints = [
   {
@@ -35,20 +35,20 @@ const additionalDeliverables = deliverables.slice(4);
 
 const howItWorks = [
   {
-    title: 'Submit your brief',
+    title: "Submit your brief",
     description:
-      'Enter company, product, market focus, and known competitors so the AI stack has a clear starting point.'
+      "Enter company, product, market focus, and known competitors so the AI stack has a clear starting point."
   },
   {
-    title: 'AI orchestration',
+    title: "AI orchestration",
     description:
-      'Claude + Perplexity analyze positioning, pricing, messaging, and emerging players to surface what matters.'
+      "Claude + Perplexity analyze positioning, pricing, messaging, and emerging players to surface what matters."
   },
   {
-    title: 'Review & share',
+    title: "Review & share",
     description: (
       <>
-        Receive a polished PDF and shareable link in your inbox. Loop in product, marketing, or leadership instantly.{' '}
+        Receive a polished PDF and shareable link in your inbox. Loop in product, marketing, or leadership instantly.{" "}
         <ReportSampleLink />
       </>
     )
@@ -71,8 +71,7 @@ export default function CompetitorProductsBriefPage() {
             Instantly Know Exactly How You Stack Up Against Top Competitors
           </h1>
           <p className="text-center text-sm text-muted-foreground sm:text-base">
-            Enter basic product information — get a ready-made competitive analysis that shows where
-            you win, why you should raise prices, and what opportunities you're missing.
+            Enter basic product information — get a ready-made competitive analysis that shows where you win, why you should raise prices, and what opportunities you're missing.
           </p>
         </div>
       </header>
@@ -87,9 +86,7 @@ export default function CompetitorProductsBriefPage() {
               </span>
               <div className="space-y-1.5">
                 <h3 className="text-base font-medium text-foreground">{step.title}</h3>
-                <p className="text-sm text-muted-foreground">
-                  {step.description}
-                </p>
+                <p className="text-sm text-muted-foreground">{step.description}</p>
               </div>
             </div>
           ))}
@@ -163,10 +160,7 @@ export default function CompetitorProductsBriefPage() {
               </div>
             </div>
             <div>
-              <label
-                className="text-sm font-medium text-foreground"
-                htmlFor="email"
-              >
+              <label className="text-sm font-medium text-foreground" htmlFor="email">
                 Your Email Address (Receive your full competitor report via email - plus a personal link for quick review) *
               </label>
               <input
@@ -239,7 +233,7 @@ export default function CompetitorProductsBriefPage() {
                 <textarea
                   id="urls"
                   placeholder="https://competitor.com, https://another.com"
-                  className="mt-1 min-h-[90px] w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:border-ring focus:ring-2 focus:ring-ring"
+                  className="mt-1 min-h-[90px] w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus-border-ring focus:ring-2 focus:ring-ring"
                 />
               </div>
               <div className="sm:col-span-2">
@@ -249,22 +243,26 @@ export default function CompetitorProductsBriefPage() {
                 <textarea
                   id="concerns"
                   placeholder="Where do you feel pressure? What data is missing?"
-                  className="mt-1 min-h-[110px] w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:border-ring focus:ring-2 focus:ring-ring"
+                  className="mt-1 min-h-[110px] w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus-border-ring focus:ring-2 focus:ring-ring"
                 />
               </div>
             </div>
           </fieldset>
 
-          <p className="text-center text-base font-bold text-muted-foreground">
-            * Powered by Claude 4.5 Sonnet + Perplexity Sonar Pro. Each request uses real credits.
-          </p>
-          <div className="text-center"><ReportSampleLink />
           <button
             type="submit"
             className="inline-flex w-full items-center justify-center rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-xs transition-all hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
             Generate Analysis
           </button>
+
+          <div className="text-center">
+            <ReportSampleLink />
+          </div>
+
+          <p className="text-center text-base font-bold text-muted-foreground">
+            * Powered by Claude 4.5 Sonnet + Perplexity Sonar Pro. Each request uses real credits.
+          </p>
         </form>
       </section>
 
