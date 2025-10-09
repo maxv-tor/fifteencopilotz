@@ -1,5 +1,5 @@
-import type { MouseEvent } from "react";
 import { CheckCircle2, Bot, LineChart, Users } from "lucide-react";
+import { ReportSampleLink } from '@/components/report-sample-link';
 
 const sellingPoints = [
   {
@@ -35,20 +35,23 @@ const additionalDeliverables = deliverables.slice(4);
 
 const howItWorks = [
   {
-    title: "Submit your brief",
+    title: 'Submit your brief',
     description:
-      "Enter company, product, market focus, and known competitors so the AI stack has a clear starting point."
+      'Enter company, product, market focus, and known competitors so the AI stack has a clear starting point.'
   },
   {
-    title: "AI orchestration",
+    title: 'AI orchestration',
     description:
-      "Claude + Perplexity analyze positioning, pricing, messaging, and emerging players to surface what matters."
+      'Claude + Perplexity analyze positioning, pricing, messaging, and emerging players to surface what matters.'
   },
   {
-    title: "Review & share",
-    description:
-      "Receive a polished PDF and shareable link in your inbox. Loop in product, marketing, or leadership instantly.",
-    showSampleLink: true
+    title: 'Review & share',
+    description: (
+      <>
+        Receive a polished PDF and shareable link in your inbox. Loop in product, marketing, or leadership instantly.{' '}
+        <ReportSampleLink />
+      </>
+    )
   }
 ];
 
@@ -57,15 +60,6 @@ export const metadata = {
 };
 
 export default function CompetitorProductsBriefPage() {
-  const handleReportSampleClick = (event: MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
-    window.open(
-      "/competitor-products-brief/report-sample-html.html",
-      "_blank",
-      "noopener,noreferrer,width=1200,height=800"
-    );
-  };
-
   return (
     <div className="space-y-8">
       <header className="space-y-3">
@@ -95,18 +89,6 @@ export default function CompetitorProductsBriefPage() {
                 <h3 className="text-base font-medium text-foreground">{step.title}</h3>
                 <p className="text-sm text-muted-foreground">
                   {step.description}
-                  {step.showSampleLink && (
-                    <>
-                      {" "}
-                      <a
-                        href="/competitor-products-brief/report-sample-html.html"
-                        onClick={handleReportSampleClick}
-                        className="font-semibold text-primary underline-offset-4 hover:underline"
-                      >
-                        Report Sample
-                      </a>
-                    </>
-                  )}
                 </p>
               </div>
             </div>
