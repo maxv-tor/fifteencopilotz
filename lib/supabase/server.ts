@@ -36,10 +36,12 @@ async function supabaseFetch<T>({
     }
   }
 
+  const serviceRoleKey = SUPABASE_SERVICE_ROLE_KEY;
+
   const response = await fetch(url.toString(), {
     headers: {
-      apikey: SUPABASE_SERVICE_ROLE_KEY,
-      Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+      apikey: serviceRoleKey,
+      Authorization: `Bearer ${serviceRoleKey}`,
       Accept: "application/json",
       "Content-Type": "application/json",
       Prefer: "count=none",
