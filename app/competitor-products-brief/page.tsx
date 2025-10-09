@@ -249,13 +249,6 @@ export default function CompetitorProductsBriefPage() {
             </div>
           </fieldset>
 
-          <button
-            type="submit"
-            className="inline-flex w-full items-center justify-center rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-xs transition-all hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-          >
-            Generate Analysis
-          </button>
-
           <div className="text-center">
             <ReportSampleLink />
           </div>
@@ -263,6 +256,13 @@ export default function CompetitorProductsBriefPage() {
           <p className="text-center text-base font-bold text-muted-foreground">
             * Powered by Claude 4.5 Sonnet + Perplexity Sonar Pro. Each request uses real credits.
           </p>
+
+          <button
+            type="submit"
+            className="inline-flex w-full items-center justify-center rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-xs transition-all hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            Generate Analysis
+          </button>
         </form>
       </section>
 
