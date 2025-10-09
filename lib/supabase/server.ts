@@ -36,7 +36,7 @@ async function supabaseFetch<T>({
     }
   }
 
-  const serviceRoleKey = SUPABASE_SERVICE_ROLE_KEY;
+  const serviceRoleKey = SUPABASE_SERVICE_ROLE_KEY!;
 
   const response = await fetch(url.toString(), {
     headers: {
@@ -45,7 +45,7 @@ async function supabaseFetch<T>({
       Accept: "application/json",
       "Content-Type": "application/json",
       Prefer: "count=none",
-    },
+    } as HeadersInit,
     cache: "no-store",
   });
 
