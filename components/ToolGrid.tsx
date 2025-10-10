@@ -6,27 +6,36 @@ import { Search } from "lucide-react";
 import type { Tool, ToolCategory } from "@/lib/tools";
 import { toolFilters, tools as defaultTools } from "@/lib/tools";
 
+type ToolWithOptionalHidden = Tool & { hidden?: boolean };
+
 type ToolGridProps = {
   tools?: Tool[];
 };
 
 export function ToolGrid({ tools = defaultTools }: ToolGridProps) {
+  const normalizedTools = React.useMemo(
+    () => tools as ToolWithOptionalHidden[],
+    [tools]
+  );
+
   const [searchQuery, setSearchQuery] = React.useState("");
   const [selectedCategory, setSelectedCategory] =
     React.useState<ToolCategory>("all");
 
   const filteredTools = React.useMemo(() => {
-    return tools.filter((tool) => {
-      const matchesCategory =
-        selectedCategory === "all" || tool.categories.includes(selectedCategory);
-      const matchesSearch =
-        searchQuery.trim().length === 0 ||
-        tool.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        tool.description.toLowerCase().includes(searchQuery.toLowerCase());
+    return normalizedTools
+      .filter((tool) => !tool.hidden)
+      .filter((tool) => {
+        const matchesCategory =
+          selectedCategory === "all" || tool.categories.includes(selectedCategory);
+        const matchesSearch =
+          searchQuery.trim().length === 0 ||
+          tool.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          tool.description.toLowerCase().includes(searchQuery.toLowerCase());
 
-      return matchesCategory && matchesSearch;
-    });
-  }, [tools, selectedCategory, searchQuery]);
+        return matchesCategory && matchesSearch;
+      });
+  }, [normalizedTools, selectedCategory, searchQuery]);
 
   return (
     <div className="space-y-6">
