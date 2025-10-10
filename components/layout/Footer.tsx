@@ -7,7 +7,7 @@ export function Footer() {
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-10 md:flex-row md:items-start md:justify-between">
         <div className="space-y-3 md:max-w-sm">
           <span className="font-mono text-xl font-semibold text-foreground">
-            Content Labs 416
+            <a href="/">Content Labs 416</a>
           </span>
           <p className="text-sm text-muted-foreground">
             An AI agents and copilots platform that automates market analysis, content creation, and campaign launches.
