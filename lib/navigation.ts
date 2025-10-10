@@ -45,11 +45,7 @@ export const navigationSections: NavigationSection[] = [
     title: "Content Creation Copilots",
     icon: SquarePen,
     items: [
-      {
-        name: "Content Creation Copilot",
-        href: "/copilot-page-template"
-      },
-      {
+       {
         name: "Lead Nurture Email",
         href: "#",
         soon: true
@@ -110,7 +106,6 @@ export const footerColumns = [
     title: "Solutions",
     links: [
       { label: "Competitor Products Brief", href: "/competitor-products-brief" },
-      { label: "Content Creation Copilot", href: "/copilot-page-template" },
       { label: "Market Insight Briefs", href: "#", soon: true },
       { label: "Client Intake to Brief", href: "#", soon: true }
     ]
