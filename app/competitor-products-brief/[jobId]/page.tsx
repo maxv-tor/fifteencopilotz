@@ -1,6 +1,4 @@
 import { notFound } from "next/navigation";
-import { marked } from "marked";
-
 import { getCompetitorReport } from "@/lib/supabase/server";
 
 type PageProps = {
@@ -20,11 +18,13 @@ export default async function CompetitorProductBriefPage({
     notFound();
   }
 
-  const html = marked.parse(report.html_content);
+  // ❌ УДАЛИТЬ ЭТУ СТРОКУ:
+  // const html = marked.parse(report.html_content);
 
+  // ✅ HTML уже отрендерен в n8n, просто показываем:
   return (
     <main className="prose mx-auto max-w-4xl px-6 py-12">
-      <article dangerouslySetInnerHTML={{ __html: html }} />
+      <article dangerouslySetInnerHTML={{ __html: report.html_content }} />
     </main>
   );
 }
