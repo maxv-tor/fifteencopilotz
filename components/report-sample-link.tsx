@@ -18,7 +18,7 @@ export function ReportSampleLink() {
       onClick={handleClick}
       className="font-semibold text-primary underline-offset-4 hover:underline"
     >
-      Report Sample
+      Click here to see a sample report. Will open in a new window
     </a>
   );
 }
