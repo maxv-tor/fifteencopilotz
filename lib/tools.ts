@@ -36,6 +36,7 @@ export type Tool = {
   categories: ToolCategory[];
   status: ToolStatus;
   cta?: string;
+  hidden?: boolean;
 };
 
 export const toolFilters: { value: ToolCategory; label: string }[] = [
@@ -67,7 +68,8 @@ export const tools: Tool[] = [
     icon: PenSquare,
     categories: ["copilot"],
     status: "available",
-    cta: "Launch"
+    cta: "Launch",
+    hidden: true
   },
   {
     name: "Market Insight Briefs",
