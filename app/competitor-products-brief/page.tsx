@@ -48,7 +48,7 @@ const howItWorks = [
     title: "Review & share",
     description: (
       <>
-        Receive a polished PDF and shareable link in your inbox. Loop in product, marketing, or leadership instantly.{" "}
+        Get your report by email with a secure, always‑available shareable link.{" "}
         <ReportSampleLink />
       </>
     )
