@@ -72,7 +72,7 @@ export default function CompetitorProductsBriefPage() {
     setStatusMessage("");
   };
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormForm>) => {
     event.preventDefault();
     resetStatus();
 
@@ -142,8 +142,22 @@ export default function CompetitorProductsBriefPage() {
 
       setSubmissionState("success");
       setStatusMessage(
-        `All set! Your competitive products brief is on the way to ${emailForMessage}. Please allow up to 10 minutes for the email to arrive.`
+        `All set! Your competitive products brief is on the way to ${emailForMessage}. Redirecting to your report...`
       );
+      
+      // Handle redirect to report page
+      if (responseBody?.redirect_url) {
+        console.log("[form] Redirecting to:", responseBody.redirect_url);
+        setTimeout(() => {
+          window.location.href = responseBody.redirect_url;
+        }, 2000); // Wait 2 seconds to show success message
+      } else if (responseBody?.job_id) {
+        console.log("[form] Redirecting to job_id:", responseBody.job_id);
+        setTimeout(() => {
+          window.location.href = `/competitor-products-brief/${responseBody.job_id}`;
+        }, 2000);
+      }
+      
       event.currentTarget.reset();
     } catch (error) {
       console.error("Error submitting form:", error);
