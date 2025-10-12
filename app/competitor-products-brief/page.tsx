@@ -1,3 +1,4 @@
+// app/competitor-products-brief/page.tsx
 "use client";
 
 import { FormEvent, useMemo, useState } from "react";
@@ -96,6 +97,8 @@ export default function CompetitorProductsBriefPage() {
       timestamp: new Date().toISOString(),
     };
 
+    console.log("[form] Sending payload:", payload);
+
     const emailForMessage = payload.email || "your email";
 
     setIsSubmitting(true);
@@ -114,7 +117,10 @@ export default function CompetitorProductsBriefPage() {
         body: JSON.stringify(payload),
       });
 
+      console.log("[form] Response status:", response.status);
+
       const responseBody = await response.json().catch(() => null);
+      console.log("[form] Response body:", responseBody);
 
       if (!response.ok || !responseBody?.success) {
         const missingFields =
@@ -329,11 +335,12 @@ export default function CompetitorProductsBriefPage() {
               </div>
               <div className="sm:col-span-2">
                 <label className="text-sm font-medium text-foreground" htmlFor="target">
-                  Target market
+                  Target market *
                 </label>
                 <textarea
                   id="target"
                   name="target"
+                  required
                   placeholder="B2B SaaS companies in the US, ARR 1-10M"
                   className="mt-1 min-h-[90px] w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:border-ring focus:ring-2 focus:ring-ring"
                 />
