@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
 
     console.log("[proxy] Outgoing webhook payload:", webhookPayload);
 
-    // Создаем URL с query параметрами для GET запроса
+    // Create URL with query parameters for GET request
     const queryParams = new URLSearchParams(webhookPayload).toString();
     const fullWebhookUrl = `${WEBHOOK_URL}?${queryParams}`;
 
@@ -125,6 +125,8 @@ export async function POST(request: NextRequest) {
         message:
           (typeof responseJson?.message === "string" && responseJson.message) ||
           "Webhook accepted the payload.",
+        redirect_url: typeof responseJson?.redirect_url === "string" ? responseJson.redirect_url : undefined, // Pass redirect_url from n8n
+        job_id: typeof responseJson?.job_id === "string" ? responseJson.job_id : undefined, // Pass job_id from n8n
         details: responseJson ?? null,
       },
       { status: 200 }
