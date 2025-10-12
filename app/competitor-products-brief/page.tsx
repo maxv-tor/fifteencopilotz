@@ -76,7 +76,10 @@ const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
   event.preventDefault();
   resetStatus();
 
-  const formData = new FormData(event.currentTarget);
+  // ✅ Сохраняем ссылку на форму ДО async операций
+  const form = event.currentTarget;
+
+  const formData = new FormData(form);
 
   const toStringValue = (value: FormDataEntryValue | null) =>
     typeof value === "string" ? value.trim() : "";
@@ -145,19 +148,19 @@ const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
       `All set! Your competitive products brief is on the way to ${emailForMessage}. Redirecting to your report...`
     );
     
-    // Store redirect URL before any async operations
+    // Store redirect URL
     const redirectUrl = responseBody?.redirect_url || 
       (responseBody?.job_id ? `/competitor-products-brief/${responseBody.job_id}` : null);
 
-    // Reset form BEFORE redirect (while form still exists)
-    event.currentTarget.reset();
+    // ✅ Используем сохраненную ссылку на форму
+    form.reset();
     
     // Handle redirect to report page
     if (redirectUrl) {
       console.log("[form] Redirecting to:", redirectUrl);
       setTimeout(() => {
         window.location.href = redirectUrl;
-      }, 2000); // Wait 2 seconds to show success message
+      }, 2000);
     }
     
   } catch (error) {
@@ -172,7 +175,7 @@ const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     setIsSubmitting(false);
   }
 };
-
+  
   const statusIcon = useMemo(() => {
     switch (submissionState) {
       case "pending":
