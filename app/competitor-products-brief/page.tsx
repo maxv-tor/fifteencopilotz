@@ -105,37 +105,38 @@ const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
   setIsSubmitting(true);
   setSubmissionState("pending");
   setStatusMessage(
-    `Starting analysis... This usually takes 7–12 minutes.You will still receive your report to ${emailForMessage}``
+    "Starting analysis... This usually takes 7-12 minutes. You will still receive your report to " + emailForMessage
   );
 
   try {
-    // Step 1: Submit form and get job_id immediately
- const response = await fetch(API_ROUTE, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-  },
-  body: JSON.stringify(payload),
-});
+    const response = await fetch(API_ROUTE, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
 
-console.log("[form] Response status:", response.status);
+    console.log("[form] Response status:", response.status);
 
-// ← begin code to check for 524
-if (response.status === 524) {
-console.log("[form] Timeout (524) received - job likely processing in background");
-setSubmissionState("success");
-setStatusMessage(
-  "Your analysis has been submitted successfully! Due to high processing time, we'll send your report directly to " + 
-  emailForMessage + 
-  " when ready (usually 7-15 minutes)."
-);
-setIsSubmitting(false);
-form.reset();}
-// ← end
+    // Handle 524 timeout - job processing in background
+    if (response.status === 524) {
+      console.log("[form] Timeout (524) received - job likely processing in background");
+      setSubmissionState("success");
+      setStatusMessage(
+        "Your analysis has been submitted successfully! Due to high processing time, we'll send your report directly to " + 
+        emailForMessage + 
+        " when ready (usually 7-15 minutes)."
+      );
+      setIsSubmitting(false);
+      form.reset();
+      return;
+    }
 
-const responseBody = await response.json().catch(() => null);
-console.log("[form] Response body:", responseBody);
+    const responseBody = await response.json().catch(() => null);
+    console.log("[form] Response body:", responseBody);
+    
     if (!response.ok || !responseBody?.success) {
       const missingFields =
         Array.isArray(responseBody?.missingFields) && responseBody.missingFields.length > 0
@@ -145,10 +146,10 @@ console.log("[form] Response body:", responseBody);
       let errorDetails =
         (typeof responseBody?.error === "string" && responseBody.error) ||
         (typeof responseBody?.details === "string" && responseBody.details) ||
-        `Request failed with status ${response.status}.`;
+        "Request failed with status " + response.status + ".";
 
       if (missingFields) {
-        errorDetails += ` Missing fields: ${missingFields.join(", ")}`;
+        errorDetails += " Missing fields: " + missingFields.join(", ");
       }
 
       throw new Error(errorDetails);
@@ -159,71 +160,64 @@ console.log("[form] Response body:", responseBody);
     
     form.reset();
     
-    // Step 2: Start polling for completion
     setStatusMessage(
-      `Analysis started! Researching your competitors... We'll also email you at ${emailForMessage} when ready.`
+      "Analysis started! Researching your competitors... We'll also email you at " + emailForMessage + " when ready."
     );
 
     const pollForCompletion = async () => {
-      const maxAttempts = 120; // 120 * 5 sec = 10 minutes max
+      const maxAttempts = 120;
       let attempts = 0;
 
       const checkStatus = async (): Promise<void> => {
         attempts++;
         
         try {
-          console.log(`[poll] Checking status (attempt ${attempts})...`);
+          console.log("[poll] Checking status (attempt " + attempts + ")...");
           
-          const statusResponse = await fetch(`/api/job-status/${jobId}`, {
+          const statusResponse = await fetch("/api/job-status/" + jobId, {
             cache: 'no-store'
           });
           const statusData = await statusResponse.json();
 
-          console.log(`[poll] Status:`, statusData.status);
+          console.log("[poll] Status:", statusData.status);
 
           if (statusData.status === 'completed') {
             console.log('[poll] Analysis complete!');
             setSubmissionState("success");
-            setStatusMessage(
-              `Analysis complete! Your report is ready. Redirecting...`
-            );
+            setStatusMessage("Analysis complete! Your report is ready. Redirecting...");
             
             setTimeout(() => {
-              window.location.href = `/competitor-products-brief/${jobId}`;
+              window.location.href = "/competitor-products-brief/" + jobId;
             }, 2000);
             
-            return; // Done
+            return;
           }
 
           if (statusData.status === 'error' || statusData.status === 'failed') {
             throw new Error('Analysis failed. Please contact support with job ID: ' + jobId);
           }
 
-          // Still processing
           if (attempts >= maxAttempts) {
             console.log('[poll] Max attempts reached, stopping polling');
             setStatusMessage(
-              `Analysis is taking longer than expected. We'll email you at ${emailForMessage} when it's ready. (Job ID: ${jobId})`
+              "Analysis is taking longer than expected. We'll email you at " + emailForMessage + " when it's ready. (Job ID: " + jobId + ")"
             );
             setIsSubmitting(false);
             return;
           }
 
-          // Update progress message
           const elapsedMinutes = Math.floor((attempts * 5) / 60);
           const elapsedSeconds = (attempts * 5) % 60;
           const timeStr = elapsedMinutes > 0 
-            ? `${elapsedMinutes} min ${elapsedSeconds} sec`
-            : `${elapsedSeconds} sec`;
+            ? elapsedMinutes + " min " + elapsedSeconds + " sec"
+            : elapsedSeconds + " sec";
           
           setStatusMessage(
-            `Analysis in progress (${timeStr} elapsed)... Researching competitors and market data. Hang tight!`
+            "Analysis in progress (" + timeStr + " elapsed)... Researching competitors and market data. Hang tight!"
           );
 
-          // Wait 5 seconds before next check
           await new Promise(resolve => setTimeout(resolve, 5000));
           
-          // Continue polling
           return checkStatus();
 
         } catch (error) {
