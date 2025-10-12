@@ -64,13 +64,17 @@ export async function POST(request: NextRequest) {
 
     console.log("[proxy] Outgoing webhook payload:", webhookPayload);
 
-    const webhookResponse = await fetch(WEBHOOK_URL, {
-      method: "POST",
+    // Создаем URL с query параметрами для GET запроса
+    const queryParams = new URLSearchParams(webhookPayload).toString();
+    const fullWebhookUrl = `${WEBHOOK_URL}?${queryParams}`;
+
+    console.log("[proxy] Full webhook URL:", fullWebhookUrl);
+
+    const webhookResponse = await fetch(fullWebhookUrl, {
+      method: "GET",
       headers: {
-        "Content-Type": "application/json",
         Accept: "application/json",
       },
-      body: JSON.stringify(webhookPayload),
     });
 
     const responseText = await webhookResponse.text();
