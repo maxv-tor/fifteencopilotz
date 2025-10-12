@@ -76,9 +76,7 @@ const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
   event.preventDefault();
   resetStatus();
 
-  // ✅ Сохраняем ссылку на форму ДО async операций
   const form = event.currentTarget;
-
   const formData = new FormData(form);
 
   const toStringValue = (value: FormDataEntryValue | null) =>
@@ -107,10 +105,11 @@ const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
   setIsSubmitting(true);
   setSubmissionState("pending");
   setStatusMessage(
-    `We are processing your request. This usually takes 5–10 minutes depending on complexity. You will receive the report at ${emailForMessage}.`
+    `Starting analysis... This usually takes 5–10 minutes.`
   );
 
   try {
+    // Step 1: Submit form and get job_id immediately
     const response = await fetch(API_ROUTE, {
       method: "POST",
       headers: {
@@ -143,26 +142,89 @@ const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
       throw new Error(errorDetails);
     }
 
-    setSubmissionState("success");
-    setStatusMessage(
-      `All set! Your competitive products brief is on the way to ${emailForMessage}. Redirecting to your report...`
-    );
+    const jobId = responseBody.job_id;
+    console.log("[form] Job created:", jobId);
     
-    // Store redirect URL
-    const redirectUrl = responseBody?.redirect_url || 
-      (responseBody?.job_id ? `/competitor-products-brief/${responseBody.job_id}` : null);
-
-    // ✅ Используем сохраненную ссылку на форму
     form.reset();
     
-    // Handle redirect to report page
-    if (redirectUrl) {
-      console.log("[form] Redirecting to:", redirectUrl);
-      setTimeout(() => {
-        window.location.href = redirectUrl;
-      }, 2000);
-    }
-    
+    // Step 2: Start polling for completion
+    setStatusMessage(
+      `Analysis started! Researching your competitors... We'll also email you at ${emailForMessage} when ready.`
+    );
+
+    const pollForCompletion = async () => {
+      const maxAttempts = 120; // 120 * 5 sec = 10 minutes max
+      let attempts = 0;
+
+      const checkStatus = async (): Promise<void> => {
+        attempts++;
+        
+        try {
+          console.log(`[poll] Checking status (attempt ${attempts})...`);
+          
+          const statusResponse = await fetch(`/api/job-status/${jobId}`, {
+            cache: 'no-store'
+          });
+          const statusData = await statusResponse.json();
+
+          console.log(`[poll] Status:`, statusData.status);
+
+          if (statusData.status === 'completed') {
+            console.log('[poll] Analysis complete!');
+            setSubmissionState("success");
+            setStatusMessage(
+              `Analysis complete! Your report is ready. Redirecting...`
+            );
+            
+            setTimeout(() => {
+              window.location.href = `/competitor-products-brief/${jobId}`;
+            }, 2000);
+            
+            return; // Done
+          }
+
+          if (statusData.status === 'error' || statusData.status === 'failed') {
+            throw new Error('Analysis failed. Please contact support with job ID: ' + jobId);
+          }
+
+          // Still processing
+          if (attempts >= maxAttempts) {
+            console.log('[poll] Max attempts reached, stopping polling');
+            setStatusMessage(
+              `Analysis is taking longer than expected. We'll email you at ${emailForMessage} when it's ready. (Job ID: ${jobId})`
+            );
+            setIsSubmitting(false);
+            return;
+          }
+
+          // Update progress message
+          const elapsedMinutes = Math.floor((attempts * 5) / 60);
+          const elapsedSeconds = (attempts * 5) % 60;
+          const timeStr = elapsedMinutes > 0 
+            ? `${elapsedMinutes} min ${elapsedSeconds} sec`
+            : `${elapsedSeconds} sec`;
+          
+          setStatusMessage(
+            `Analysis in progress (${timeStr} elapsed)... Researching competitors and market data. Hang tight!`
+          );
+
+          // Wait 5 seconds before next check
+          await new Promise(resolve => setTimeout(resolve, 5000));
+          
+          // Continue polling
+          return checkStatus();
+
+        } catch (error) {
+          console.error('[poll] Error:', error);
+          throw error;
+        }
+      };
+
+      await checkStatus();
+    };
+
+    await pollForCompletion();
+
   } catch (error) {
     console.error("Error submitting form:", error);
     setSubmissionState("error");
@@ -171,11 +233,9 @@ const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         ? error.message
         : "We could not submit your request. Please try again or contact support."
     );
-  } finally {
     setIsSubmitting(false);
   }
-};
-  
+};  
   const statusIcon = useMemo(() => {
     switch (submissionState) {
       case "pending":
