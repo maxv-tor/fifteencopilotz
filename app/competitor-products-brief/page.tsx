@@ -105,25 +105,37 @@ const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
   setIsSubmitting(true);
   setSubmissionState("pending");
   setStatusMessage(
-    `Starting analysis... This usually takes 5–10 minutes.`
+    `Starting analysis... This usually takes 7–12 minutes.You will still receive your report to ${emailForMessage}``
   );
 
   try {
     // Step 1: Submit form and get job_id immediately
-    const response = await fetch(API_ROUTE, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
+ const response = await fetch(API_ROUTE, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+  },
+  body: JSON.stringify(payload),
+});
 
-    console.log("[form] Response status:", response.status);
+console.log("[form] Response status:", response.status);
 
-    const responseBody = await response.json().catch(() => null);
-    console.log("[form] Response body:", responseBody);
+// ← begin code to check for 524
+if (response.status === 524) {
+  console.log("[form] Timeout (524) received - job likely processing in background");
+  setSubmissionState("success");
+  setStatusMessage(
+    `Your analysis has been submitted successfully! Due to high processing time, we'll send your report directly to ${emailForMessage} when ready (usually 7-12 minutes).`
+  );
+  setIsSubmitting(false);
+  form.reset();
+  return;
+}
+// ← end
 
+const responseBody = await response.json().catch(() => null);
+console.log("[form] Response body:", responseBody);
     if (!response.ok || !responseBody?.success) {
       const missingFields =
         Array.isArray(responseBody?.missingFields) && responseBody.missingFields.length > 0
