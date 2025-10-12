@@ -1,28 +1,30 @@
 "use client";
 
-import { useState, FormEvent } from "react";
-import { CheckCircle2, Bot, LineChart, Users } from "lucide-react";
+import { FormEvent, useMemo, useState } from "react";
+import { AlertCircle, Bot, CheckCircle2, LineChart, Loader2, Users } from "lucide-react";
 import { ReportSampleLink } from "@/components/report-sample-link";
+
+type SubmissionState = "idle" | "pending" | "success" | "error";
 
 const sellingPoints = [
   {
     icon: Bot,
     title: "AI Orchestration",
     description:
-      "Claude 4.5 Sonnet + Perplexity Sonar Pro combine open data and fresh market signals."
+      "Claude 4.5 Sonnet + Perplexity Sonar Pro combine open data and fresh market signals.",
   },
   {
     icon: LineChart,
     title: "Ready-Made Insights",
     description:
-      "Positioning, pricing strategies, ad messaging, and expertise gaps in a single brief."
+      "Positioning, pricing strategies, ad messaging, and expertise gaps in a single brief.",
   },
   {
     icon: Users,
     title: "Niche Player Tracking",
     description:
-      "Add known competitors and local brands so you don't miss paid traffic opportunities."
-  }
+      "Add known competitors and local brands so you don't miss paid traffic opportunities.",
+  },
 ];
 
 const deliverables = [
@@ -30,81 +32,114 @@ const deliverables = [
   "Breakdown of product lines and pricing strategies",
   "Chart of hidden opportunities and white space segments",
   "Recommendations for unique value propositions and GTM",
-  "Summary of advertising creatives and channels"
+  "Summary of advertising creatives and channels",
 ];
-
-const deliverableHighlights = deliverables.slice(0, 4);
-const additionalDeliverables = deliverables.slice(4);
 
 const howItWorks = [
   {
     title: "Submit your brief",
     description:
-      "Enter company, product, market focus, and known competitors so the AI stack has a clear starting point."
+      "Enter company, product, market focus, and known competitors so the AI stack has a clear starting point.",
   },
   {
     title: "AI orchestration",
     description:
-      "Claude + Perplexity analyze positioning, pricing, messaging, and emerging players to surface what matters."
+      "Claude + Perplexity analyze positioning, pricing, messaging, and emerging players to surface what matters.",
   },
   {
     title: "Review & share",
     description: (
       <>
-        Get your report by email with a secure, always‑available shareable link.{" "}
-        <ReportSampleLink />
+        Get your report by email with a secure, always‑available shareable link. <ReportSampleLink />
       </>
-    )
-  }
+    ),
+  },
 ];
+
+const deliverableHighlights = deliverables.slice(0, 4);
+const additionalDeliverables = deliverables.slice(4);
+
+const WEBHOOK_URL = "https://contentlabs.app.n8n.cloud/webhook/competitor-products-brief";
 
 export default function CompetitorProductsBriefPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submissionState, setSubmissionState] = useState<SubmissionState>("idle");
+  const [statusMessage, setStatusMessage] = useState("");
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
-    // Collect form data
-    const formData = new FormData(e.currentTarget);
-    const data = {
-      companyName: formData.get("companyName"),
-      productName: formData.get("productName"),
-      productCategory: formData.get("productCategory"),
-      productSubcategory: formData.get("productSubcategory"),
-      price: formData.get("price"),
-      email: formData.get("email"),
-      features: formData.get("features"),
-      depth: formData.get("depth"),
-      target: formData.get("target"),
-      competitors: formData.get("competitors"),
-      urls: formData.get("urls"),
-      concerns: formData.get("concerns"),
-      timestamp: new Date().toISOString()
+    const formData = new FormData(event.currentTarget);
+
+    const toStringValue = (value: FormDataEntryValue | null) =>
+      typeof value === "string" ? value.trim() : "";
+
+    const payload = {
+      companyName: toStringValue(formData.get("companyName")),
+      productName: toStringValue(formData.get("productName")),
+      productCategory: toStringValue(formData.get("productCategory")),
+      productSubcategory: toStringValue(formData.get("productSubcategory")),
+      price: toStringValue(formData.get("price")),
+      email: toStringValue(formData.get("email")),
+      features: toStringValue(formData.get("features")),
+      depth: toStringValue(formData.get("depth")) || "basic",
+      target: toStringValue(formData.get("target")),
+      competitors: toStringValue(formData.get("competitors")),
+      urls: toStringValue(formData.get("urls")),
+      concerns: toStringValue(formData.get("concerns")),
+      timestamp: new Date().toISOString(),
     };
 
+    const emailForMessage = payload.email || "your email";
+
+    setIsSubmitting(true);
+    setSubmissionState("pending");
+    setStatusMessage(
+      `We are processing your request. This usually takes 5–10 minutes depending on complexity. You will receive the report at ${emailForMessage}.`
+    );
+
     try {
-      const response = await fetch("https://contentlabs.app.n8n.cloud/webhook/competitor-products-brief", {
+      const response = await fetch(WEBHOOK_URL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Accept: "application/json",
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(payload),
       });
 
-      if (response.ok) {
-        alert("Thank you! Your competitive analysis is being prepared. Check your email in a few minutes.");
-        e.currentTarget.reset();
-      } else {
-        alert("Something went wrong. Please try again or contact support.");
+      if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`);
       }
+
+      setSubmissionState("success");
+      setStatusMessage(
+        `All set! Your competitive products brief is on the way to ${emailForMessage}. Please allow up to 10 minutes for the email to arrive.`
+      );
+      event.currentTarget.reset();
     } catch (error) {
       console.error("Error submitting form:", error);
-      alert("Failed to submit form. Please check your connection and try again.");
+      setSubmissionState("error");
+      setStatusMessage(
+        "We could not submit your request. Please check your connection and try again, or contact support if the issue persists."
+      );
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  const statusIcon = useMemo(() => {
+    switch (submissionState) {
+      case "pending":
+        return <Loader2 className="h-4 w-4 animate-spin text-primary" aria-hidden="true" />;
+      case "success":
+        return <CheckCircle2 className="h-4 w-4 text-emerald-500" aria-hidden="true" />;
+      case "error":
+        return <AlertCircle className="h-4 w-4 text-destructive" aria-hidden="true" />;
+      default:
+        return null;
+    }
+  }, [submissionState]);
 
   return (
     <div className="space-y-8">
@@ -140,7 +175,10 @@ export default function CompetitorProductsBriefPage() {
       </section>
 
       <section className="flex justify-center">
-        <form onSubmit={handleSubmit} className="w-full max-w-3xl space-y-8 rounded-3xl border border-border bg-card p-7 shadow-sm md:p-8">
+        <form
+          onSubmit={handleSubmit}
+          className="w-full max-w-3xl space-y-8 rounded-3xl border border-border bg-card p-7 shadow-sm md:p-8"
+        >
           <fieldset className="space-y-6 rounded-2xl border border-border/60 bg-background/60 p-5 md:p-6">
             <legend className="px-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
               Product basics
@@ -157,6 +195,7 @@ export default function CompetitorProductsBriefPage() {
                   required
                   placeholder="Content Labs 416"
                   className="mt-1 h-10 w-full rounded-md border border-border bg-background px-3 text-sm outline-none transition-colors focus:border-ring focus:ring-2 focus:ring-ring"
+                  autoComplete="organization"
                 />
               </div>
               <div>
@@ -170,6 +209,7 @@ export default function CompetitorProductsBriefPage() {
                   required
                   placeholder="AI Marketing Automation Suite"
                   className="mt-1 h-10 w-full rounded-md border border-border bg-background px-3 text-sm outline-none focus:border-ring focus:ring-2 focus:ring-ring"
+                  autoComplete="off"
                 />
               </div>
               <div>
@@ -183,6 +223,7 @@ export default function CompetitorProductsBriefPage() {
                   required
                   placeholder="SaaS / Marketing Automation"
                   className="mt-1 h-10 w-full rounded-md border border-border bg-background px-3 text-sm outline-none focus:border-ring focus:ring-2 focus:ring-ring"
+                  autoComplete="off"
                 />
               </div>
               <div>
@@ -195,6 +236,7 @@ export default function CompetitorProductsBriefPage() {
                   type="text"
                   placeholder="Competitive Intelligence"
                   className="mt-1 h-10 w-full rounded-md border border-border bg-background px-3 text-sm outline-none focus:border-ring focus:ring-2 focus:ring-ring"
+                  autoComplete="off"
                 />
               </div>
               <div>
@@ -207,6 +249,7 @@ export default function CompetitorProductsBriefPage() {
                   type="text"
                   placeholder="$149 / mo"
                   className="mt-1 h-10 w-full rounded-md border border-border bg-background px-3 text-sm outline-none focus:border-ring focus:ring-2 focus:ring-ring"
+                  autoComplete="off"
                 />
               </div>
             </div>
@@ -221,6 +264,7 @@ export default function CompetitorProductsBriefPage() {
                 required
                 placeholder="you@company.com"
                 className="mt-1 h-10 w-full rounded-md border border-border bg-background px-3 text-sm outline-none focus:border-ring focus:ring-2 focus:ring-ring"
+                autoComplete="email"
               />
             </div>
           </fieldset>
@@ -318,11 +362,28 @@ export default function CompetitorProductsBriefPage() {
             type="submit"
             disabled={isSubmitting}
             className={`inline-flex w-full items-center justify-center rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-xs transition-all hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
-              isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+              isSubmitting ? "cursor-not-allowed opacity-75" : ""
             }`}
           >
-            {isSubmitting ? "Submitting..." : "Get Your Competitive Products Brief Now"}
+            {isSubmitting ? (
+              <span className="flex items-center gap-2">
+                <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                Submitting...
+              </span>
+            ) : (
+              "Get Your Competitive Products Brief Now"
+            )}
           </button>
+
+          {submissionState !== "idle" && (
+            <div
+              className="flex items-start gap-3 rounded-2xl border border-border bg-background/80 p-4 shadow-sm"
+              aria-live="polite"
+            >
+              {statusIcon}
+              <p className="text-sm text-muted-foreground">{statusMessage}</p>
+            </div>
+          )}
         </form>
       </section>
 
