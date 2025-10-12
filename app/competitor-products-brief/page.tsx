@@ -72,105 +72,106 @@ export default function CompetitorProductsBriefPage() {
     setStatusMessage("");
   };
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    resetStatus();
+const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  event.preventDefault();
+  resetStatus();
 
-    const formData = new FormData(event.currentTarget);
+  const formData = new FormData(event.currentTarget);
 
-    const toStringValue = (value: FormDataEntryValue | null) =>
-      typeof value === "string" ? value.trim() : "";
+  const toStringValue = (value: FormDataEntryValue | null) =>
+    typeof value === "string" ? value.trim() : "";
 
-    const payload = {
-      companyName: toStringValue(formData.get("companyName")),
-      productName: toStringValue(formData.get("productName")),
-      productCategory: toStringValue(formData.get("productCategory")),
-      productSubcategory: toStringValue(formData.get("productSubcategory")),
-      price: toStringValue(formData.get("price")),
-      email: toStringValue(formData.get("email")),
-      features: toStringValue(formData.get("features")),
-      depth: toStringValue(formData.get("depth")) || "basic",
-      target: toStringValue(formData.get("target")),
-      competitors: toStringValue(formData.get("competitors")),
-      urls: toStringValue(formData.get("urls")),
-      concerns: toStringValue(formData.get("concerns")),
-      timestamp: new Date().toISOString(),
-    };
-
-    console.log("[form] Sending payload:", payload);
-
-    const emailForMessage = payload.email || "your email";
-
-    setIsSubmitting(true);
-    setSubmissionState("pending");
-    setStatusMessage(
-      `We are processing your request. This usually takes 5–10 minutes depending on complexity. You will receive the report at ${emailForMessage}.`
-    );
-
-    try {
-      const response = await fetch(API_ROUTE, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-
-      console.log("[form] Response status:", response.status);
-
-      const responseBody = await response.json().catch(() => null);
-      console.log("[form] Response body:", responseBody);
-
-      if (!response.ok || !responseBody?.success) {
-        const missingFields =
-          Array.isArray(responseBody?.missingFields) && responseBody.missingFields.length > 0
-            ? responseBody.missingFields
-            : null;
-
-        let errorDetails =
-          (typeof responseBody?.error === "string" && responseBody.error) ||
-          (typeof responseBody?.details === "string" && responseBody.details) ||
-          `Request failed with status ${response.status}.`;
-
-        if (missingFields) {
-          errorDetails += ` Missing fields: ${missingFields.join(", ")}`;
-        }
-
-        throw new Error(errorDetails);
-      }
-
-      setSubmissionState("success");
-      setStatusMessage(
-        `All set! Your competitive products brief is on the way to ${emailForMessage}. Redirecting to your report...`
-      );
-      
-      // Handle redirect to report page
-      if (responseBody?.redirect_url) {
-        console.log("[form] Redirecting to:", responseBody.redirect_url);
-        setTimeout(() => {
-          window.location.href = responseBody.redirect_url;
-        }, 2000); // Wait 2 seconds to show success message
-      } else if (responseBody?.job_id) {
-        console.log("[form] Redirecting to job_id:", responseBody.job_id);
-        setTimeout(() => {
-          window.location.href = `/competitor-products-brief/${responseBody.job_id}`;
-        }, 2000);
-      }
-      
-      event.currentTarget.reset();
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      setSubmissionState("error");
-      setStatusMessage(
-        error instanceof Error
-          ? error.message
-          : "We could not submit your request. Please try again or contact support."
-      );
-    } finally {
-      setIsSubmitting(false);
-    }
+  const payload = {
+    companyName: toStringValue(formData.get("companyName")),
+    productName: toStringValue(formData.get("productName")),
+    productCategory: toStringValue(formData.get("productCategory")),
+    productSubcategory: toStringValue(formData.get("productSubcategory")),
+    price: toStringValue(formData.get("price")),
+    email: toStringValue(formData.get("email")),
+    features: toStringValue(formData.get("features")),
+    depth: toStringValue(formData.get("depth")) || "basic",
+    target: toStringValue(formData.get("target")),
+    competitors: toStringValue(formData.get("competitors")),
+    urls: toStringValue(formData.get("urls")),
+    concerns: toStringValue(formData.get("concerns")),
+    timestamp: new Date().toISOString(),
   };
+
+  console.log("[form] Sending payload:", payload);
+
+  const emailForMessage = payload.email || "your email";
+
+  setIsSubmitting(true);
+  setSubmissionState("pending");
+  setStatusMessage(
+    `We are processing your request. This usually takes 5–10 minutes depending on complexity. You will receive the report at ${emailForMessage}.`
+  );
+
+  try {
+    const response = await fetch(API_ROUTE, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    console.log("[form] Response status:", response.status);
+
+    const responseBody = await response.json().catch(() => null);
+    console.log("[form] Response body:", responseBody);
+
+    if (!response.ok || !responseBody?.success) {
+      const missingFields =
+        Array.isArray(responseBody?.missingFields) && responseBody.missingFields.length > 0
+          ? responseBody.missingFields
+          : null;
+
+      let errorDetails =
+        (typeof responseBody?.error === "string" && responseBody.error) ||
+        (typeof responseBody?.details === "string" && responseBody.details) ||
+        `Request failed with status ${response.status}.`;
+
+      if (missingFields) {
+        errorDetails += ` Missing fields: ${missingFields.join(", ")}`;
+      }
+
+      throw new Error(errorDetails);
+    }
+
+    setSubmissionState("success");
+    setStatusMessage(
+      `All set! Your competitive products brief is on the way to ${emailForMessage}. Redirecting to your report...`
+    );
+    
+    // Store redirect URL before any async operations
+    const redirectUrl = responseBody?.redirect_url || 
+      (responseBody?.job_id ? `/competitor-products-brief/${responseBody.job_id}` : null);
+
+    // Reset form BEFORE redirect (while form still exists)
+    event.currentTarget.reset();
+    
+    // Handle redirect to report page
+    if (redirectUrl) {
+      console.log("[form] Redirecting to:", redirectUrl);
+      setTimeout(() => {
+        window.location.href = redirectUrl;
+      }, 2000); // Wait 2 seconds to show success message
+    }
+    
+  } catch (error) {
+    console.error("Error submitting form:", error);
+    setSubmissionState("error");
+    setStatusMessage(
+      error instanceof Error
+        ? error.message
+        : "We could not submit your request. Please try again or contact support."
+    );
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   const statusIcon = useMemo(() => {
     switch (submissionState) {
