@@ -1,3 +1,4 @@
+// app/api/competitor-products-brief/route.ts
 import { NextRequest, NextResponse } from "next/server";
 
 const WEBHOOK_URL = "https://contentlabs.app.n8n.cloud/webhook/competitor-products-brief";
@@ -24,6 +25,7 @@ export async function POST(request: NextRequest) {
       product_category: normalizeString(payload.productCategory),
       key_features: normalizeString(payload.features),
       target_market: normalizeString(payload.target),
+      email_address: normalizeString(payload.email),
     };
 
     const missingRequiredFields = Object.entries(requiredFieldMap)
@@ -45,7 +47,6 @@ export async function POST(request: NextRequest) {
     const optionalFieldMap: Record<string, string> = {
       product_subcategory: normalizeString(payload.productSubcategory),
       price_point: normalizeString(payload.price),
-      email_address: normalizeString(payload.email),
       research_depth: normalizeString(payload.depth),
       known_competitors: normalizeString(payload.competitors),
       competitor_urls: normalizeString(payload.urls),
