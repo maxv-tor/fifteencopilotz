@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { CheckCircle2, Bot, LineChart, Users } from "lucide-react";
 import { ReportSampleLink } from "@/components/report-sample-link";
 
@@ -55,11 +58,54 @@ const howItWorks = [
   }
 ];
 
-export const metadata = {
-  title: "Competitor Products Brief"
-};
-
 export default function CompetitorProductsBriefPage() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    // Собираем данные из формы
+    const formData = new FormData(e.target);
+    const data = {
+      companyName: formData.get("companyName"),
+      productName: formData.get("productName"),
+      productCategory: formData.get("productCategory"),
+      productSubcategory: formData.get("productSubcategory"),
+      price: formData.get("price"),
+      email: formData.get("email"),
+      features: formData.get("features"),
+      depth: formData.get("depth"),
+      target: formData.get("target"),
+      competitors: formData.get("competitors"),
+      urls: formData.get("urls"),
+      concerns: formData.get("concerns"),
+      timestamp: new Date().toISOString()
+    };
+
+    try {
+      const response = await fetch("https://contentlabs.app.n8n.cloud/webhook/competitor-products-brief", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (response.ok) {
+        alert("Thank you! Your competitive analysis is being prepared. Check your email in a few minutes.");
+        e.target.reset();
+      } else {
+        alert("Something went wrong. Please try again or contact support.");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert("Failed to submit form. Please check your connection and try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="space-y-8">
       <header className="space-y-3">
@@ -94,7 +140,7 @@ export default function CompetitorProductsBriefPage() {
       </section>
 
       <section className="flex justify-center">
-        <form className="w-full max-w-3xl space-y-8 rounded-3xl border border-border bg-card p-7 shadow-sm md:p-8">
+        <form onSubmit={handleSubmit} className="w-full max-w-3xl space-y-8 rounded-3xl border border-border bg-card p-7 shadow-sm md:p-8">
           <fieldset className="space-y-6 rounded-2xl border border-border/60 bg-background/60 p-5 md:p-6">
             <legend className="px-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
               Product basics
@@ -106,6 +152,7 @@ export default function CompetitorProductsBriefPage() {
                 </label>
                 <input
                   id="companyName"
+                  name="companyName"
                   type="text"
                   required
                   placeholder="Content Labs 416"
@@ -118,6 +165,7 @@ export default function CompetitorProductsBriefPage() {
                 </label>
                 <input
                   id="productName"
+                  name="productName"
                   type="text"
                   required
                   placeholder="AI Marketing Automation Suite"
@@ -130,6 +178,7 @@ export default function CompetitorProductsBriefPage() {
                 </label>
                 <input
                   id="productCategory"
+                  name="productCategory"
                   type="text"
                   required
                   placeholder="SaaS / Marketing Automation"
@@ -142,6 +191,7 @@ export default function CompetitorProductsBriefPage() {
                 </label>
                 <input
                   id="productSubcategory"
+                  name="productSubcategory"
                   type="text"
                   placeholder="Competitive Intelligence"
                   className="mt-1 h-10 w-full rounded-md border border-border bg-background px-3 text-sm outline-none focus:border-ring focus:ring-2 focus:ring-ring"
@@ -153,6 +203,7 @@ export default function CompetitorProductsBriefPage() {
                 </label>
                 <input
                   id="price"
+                  name="price"
                   type="text"
                   placeholder="$149 / mo"
                   className="mt-1 h-10 w-full rounded-md border border-border bg-background px-3 text-sm outline-none focus:border-ring focus:ring-2 focus:ring-ring"
@@ -165,6 +216,7 @@ export default function CompetitorProductsBriefPage() {
               </label>
               <input
                 id="email"
+                name="email"
                 type="email"
                 required
                 placeholder="you@company.com"
@@ -183,6 +235,7 @@ export default function CompetitorProductsBriefPage() {
               </label>
               <textarea
                 id="features"
+                name="features"
                 required
                 placeholder="AI sales assistant, competitor analysis, email automation"
                 className="mt-1 min-h-[110px] w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:border-ring focus:ring-2 focus:ring-ring"
@@ -212,6 +265,7 @@ export default function CompetitorProductsBriefPage() {
                 </label>
                 <textarea
                   id="target"
+                  name="target"
                   placeholder="B2B SaaS companies in the US, ARR 1-10M"
                   className="mt-1 min-h-[90px] w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:border-ring focus:ring-2 focus:ring-ring"
                 />
@@ -222,6 +276,7 @@ export default function CompetitorProductsBriefPage() {
                 </label>
                 <textarea
                   id="competitors"
+                  name="competitors"
                   placeholder="Competitor One, Competitor Two, ..."
                   className="mt-1 min-h-[90px] w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:border-ring focus:ring-2 focus:ring-ring"
                 />
@@ -232,8 +287,9 @@ export default function CompetitorProductsBriefPage() {
                 </label>
                 <textarea
                   id="urls"
+                  name="urls"
                   placeholder="https://competitor.com, https://another.com"
-                  className="mt-1 min-h-[90px] w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus-border-ring focus:ring-2 focus:ring-ring"
+                  className="mt-1 min-h-[90px] w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:border-ring focus:ring-2 focus:ring-ring"
                 />
               </div>
               <div className="sm:col-span-2">
@@ -242,8 +298,9 @@ export default function CompetitorProductsBriefPage() {
                 </label>
                 <textarea
                   id="concerns"
+                  name="concerns"
                   placeholder="Where do you feel pressure? What data is missing?"
-                  className="mt-1 min-h-[110px] w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus-border-ring focus:ring-2 focus:ring-ring"
+                  className="mt-1 min-h-[110px] w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:border-ring focus:ring-2 focus:ring-ring"
                 />
               </div>
             </div>
@@ -259,9 +316,12 @@ export default function CompetitorProductsBriefPage() {
 
           <button
             type="submit"
-            className="inline-flex w-full items-center justify-center rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-xs transition-all hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            disabled={isSubmitting}
+            className={`inline-flex w-full items-center justify-center rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-xs transition-all hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+              isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+            }`}
           >
-            Get Your Competitive Products Brief Now
+            {isSubmitting ? "Submitting..." : "Get Your Competitive Products Brief Now"}
           </button>
         </form>
       </section>
