@@ -16,6 +16,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    console.log("[proxy] Incoming payload:", payload);
+
     const requiredFieldMap = {
       company_name: normalizeString(payload.companyName),
       product_name: normalizeString(payload.productName),
@@ -29,6 +31,7 @@ export async function POST(request: NextRequest) {
       .map(([key]) => key);
 
     if (missingRequiredFields.length > 0) {
+      console.warn("[proxy] Missing required fields:", missingRequiredFields);
       return NextResponse.json(
         {
           success: false,
@@ -58,6 +61,8 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    console.log("[proxy] Outgoing webhook payload:", webhookPayload);
+
     const webhookResponse = await fetch(WEBHOOK_URL, {
       method: "POST",
       headers: {
@@ -68,6 +73,13 @@ export async function POST(request: NextRequest) {
     });
 
     const responseText = await webhookResponse.text();
+    console.log(
+      "[proxy] Webhook response:",
+      webhookResponse.status,
+      webhookResponse.statusText,
+      responseText
+    );
+
     let responseJson: Record<string, unknown> | null = null;
 
     if (responseText) {
