@@ -126,11 +126,12 @@ if (response.status === 524) {
 console.log("[form] Timeout (524) received - job likely processing in background");
 setSubmissionState("success");
 setStatusMessage(
-  `Your analysis has been submitted successfully! Due to high processing time, we'll send your report directly to ${emailForMessage} when ready (usually 7-15 minutes).`
+  "Your analysis has been submitted successfully! Due to high processing time, we'll send your report directly to " + 
+  emailForMessage + 
+  " when ready (usually 7-15 minutes)."
 );
 setIsSubmitting(false);
-form.reset();  return;
-}
+form.reset();}
 // ← end
 
 const responseBody = await response.json().catch(() => null);
