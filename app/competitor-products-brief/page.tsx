@@ -117,11 +117,21 @@ export default function CompetitorProductsBriefPage() {
       const responseBody = await response.json().catch(() => null);
 
       if (!response.ok || !responseBody?.success) {
-        const errorDetails =
-          responseBody?.error ||
-          responseBody?.details ||
+        const missingFields =
+          Array.isArray(responseBody?.missingFields) && responseBody.missingFields.length > 0
+            ? responseBody.missingFields
+            : null;
+
+        let errorDetails =
+          (typeof responseBody?.error === "string" && responseBody.error) ||
+          (typeof responseBody?.details === "string" && responseBody.details) ||
           `Request failed with status ${response.status}.`;
-        throw new Error(typeof errorDetails === "string" ? errorDetails : "Unknown error.");
+
+        if (missingFields) {
+          errorDetails += ` Missing fields: ${missingFields.join(", ")}`;
+        }
+
+        throw new Error(errorDetails);
       }
 
       setSubmissionState("success");
