@@ -59,15 +59,21 @@ const howItWorks = [
 const deliverableHighlights = deliverables.slice(0, 4);
 const additionalDeliverables = deliverables.slice(4);
 
-const WEBHOOK_URL = "https://contentlabs.app.n8n.cloud/webhook/competitor-products-brief";
+const API_ROUTE = "/api/competitor-products-brief";
 
 export default function CompetitorProductsBriefPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionState, setSubmissionState] = useState<SubmissionState>("idle");
   const [statusMessage, setStatusMessage] = useState("");
 
+  const resetStatus = () => {
+    setSubmissionState("idle");
+    setStatusMessage("");
+  };
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    resetStatus();
 
     const formData = new FormData(event.currentTarget);
 
@@ -99,7 +105,7 @@ export default function CompetitorProductsBriefPage() {
     );
 
     try {
-      const response = await fetch(WEBHOOK_URL, {
+      const response = await fetch(API_ROUTE, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -108,8 +114,14 @@ export default function CompetitorProductsBriefPage() {
         body: JSON.stringify(payload),
       });
 
-      if (!response.ok) {
-        throw new Error(`Request failed with status ${response.status}`);
+      const responseBody = await response.json().catch(() => null);
+
+      if (!response.ok || !responseBody?.success) {
+        const errorDetails =
+          responseBody?.error ||
+          responseBody?.details ||
+          `Request failed with status ${response.status}.`;
+        throw new Error(typeof errorDetails === "string" ? errorDetails : "Unknown error.");
       }
 
       setSubmissionState("success");
@@ -121,7 +133,9 @@ export default function CompetitorProductsBriefPage() {
       console.error("Error submitting form:", error);
       setSubmissionState("error");
       setStatusMessage(
-        "We could not submit your request. Please check your connection and try again, or contact support if the issue persists."
+        error instanceof Error
+          ? error.message
+          : "We could not submit your request. Please try again or contact support."
       );
     } finally {
       setIsSubmitting(false);
@@ -131,11 +145,11 @@ export default function CompetitorProductsBriefPage() {
   const statusIcon = useMemo(() => {
     switch (submissionState) {
       case "pending":
-        return <Loader2 className="h-4 w-4 animate-spin text-primary" aria-hidden="true" />;
+        return <Loader2 className="h-4 w-4 animate-spin text-primary" aria-hidden={true} />;
       case "success":
-        return <CheckCircle2 className="h-4 w-4 text-emerald-500" aria-hidden="true" />;
+        return <CheckCircle2 className="h-4 w-4 text-emerald-500" aria-hidden={true} />;
       case "error":
-        return <AlertCircle className="h-4 w-4 text-destructive" aria-hidden="true" />;
+        return <AlertCircle className="h-4 w-4 text-destructive" aria-hidden={true} />;
       default:
         return null;
     }
@@ -367,7 +381,7 @@ export default function CompetitorProductsBriefPage() {
           >
             {isSubmitting ? (
               <span className="flex items-center gap-2">
-                <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                <Loader2 className="h-4 w-4 animate-spin" aria-hidden={true} />
                 Submitting...
               </span>
             ) : (
