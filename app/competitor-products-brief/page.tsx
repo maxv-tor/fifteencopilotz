@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, FormEvent } from "react";
 import { CheckCircle2, Bot, LineChart, Users } from "lucide-react";
 import { ReportSampleLink } from "@/components/report-sample-link";
 
@@ -61,12 +61,12 @@ const howItWorks = [
 export default function CompetitorProductsBriefPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Собираем данные из формы
-    const formData = new FormData(e.target);
+    // Collect form data
+    const formData = new FormData(e.currentTarget);
     const data = {
       companyName: formData.get("companyName"),
       productName: formData.get("productName"),
@@ -94,7 +94,7 @@ export default function CompetitorProductsBriefPage() {
 
       if (response.ok) {
         alert("Thank you! Your competitive analysis is being prepared. Check your email in a few minutes.");
-        e.target.reset();
+        e.currentTarget.reset();
       } else {
         alert("Something went wrong. Please try again or contact support.");
       }
