@@ -72,7 +72,7 @@ export default function CompetitorProductsBriefPage() {
     setStatusMessage("");
   };
 
-  const handleSubmit = async (event: FormEvent<HTMLFormForm>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     resetStatus();
 
