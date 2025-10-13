@@ -4,7 +4,7 @@ import { Fragment, MouseEvent } from 'react';
 
 const reports: Array<{ label: string; href: string }> = [
   {
-    label: 'Click here to see a Sample Report #1',
+    label: 'Sample Report #1',
     href: '/competitor-products-brief/1513ee36-4ab4-4d3f-a824-abdd54987902',
   },
   {
