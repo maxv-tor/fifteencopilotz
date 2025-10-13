@@ -20,7 +20,7 @@ export function ReportSampleLink() {
         onClick={handleClick}
         className="font-semibold text-primary underline-offset-4 hover:underline"
       >
-        Click here to see a Sample Report #1
+        Sample Report #1
       </a>
       {' | '}
       <a
