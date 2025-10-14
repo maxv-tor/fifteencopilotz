@@ -79,3 +79,24 @@ export async function getCompetitorReport(
 
   return data[0] ?? null;
 }
+
+export type LeadNurtureEmailReportRow = {
+  job_id: string;
+  html_content: string;
+  updated_at: string;
+};
+
+export async function getLeadNurtureEmailReport(
+  jobId: string
+): Promise<LeadNurtureEmailReportRow | null> {
+  const data = await supabaseFetch<LeadNurtureEmailReportRow[]>({
+    path: "lead_nurture_email_reports",
+    query: {
+      select: "job_id,html_content,updated_at",
+      job_id: `eq.${jobId}`,
+      limit: "1",
+    },
+  });
+
+  return data[0] ?? null;
+}

@@ -93,10 +93,11 @@ export const tools: Tool[] = [
     name: "Lead Nurture Email Copilot",
     description:
       "Your collaborative partner for creating, optimizing, and managing high-converting email nurture sequences that build know, like, and trust with your subscribers through strategic, value-driven content that deepens relationships and engagement.",
-    href: "#",
+    href: "/lead-nurture-email",
     icon: RefreshCcw,
     categories: ["copilot", "email"],
-    status: "coming-soon"
+    status: "available",
+    cta: "Open"
   },
   {
     name: "Re-engagement Email Copilot",
