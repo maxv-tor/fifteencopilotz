@@ -47,8 +47,7 @@ export const navigationSections: NavigationSection[] = [
     items: [
        {
         name: "Lead Nurture Email",
-        href: "#",
-        soon: true
+        href: "/lead-nurture-email"
       },
       {
         name: "Re-engagement Email",
