@@ -53,7 +53,7 @@ export const tools: Tool[] = [
   {
     name: "Competitor Products Brief",
     description:
-      "Deep AI analysis of the competitive landscape with insights on positioning, pricing, and hidden opportunities.",
+      "Your intelligent partner for uncovering, analyzing, and distilling competitor insights into clear, strategic advantage - combining Perplexity's smart research and Claude-Sonnet-4.5 synthesis to reveal positioning gaps, pricing opportunities, and differentiation tactics that sharpen your market edge and guide winning decisions.",
     href: "/competitor-products-brief",
     icon: FileBarChart2,
     categories: ["agentic", "research"],
