@@ -268,7 +268,7 @@ export default function LeadNurtureEmailPage() {
             Turn Every Email Into a Trust-Building, Client-Winning Conversation
           </h1>
           <p className="text-center text-sm text-muted-foreground sm:text-base">
-            Get a customized, AI‑powered nurture sequence that deepens relationships, earns attention, and transforms subscribers into loyal, long‑term customers.
+            Get a customized, AI-powered nurture sequence that deepens relationships, earns attention, and transforms subscribers into loyal, long-term customers.
           </p>
         </div>
       </header>
@@ -344,7 +344,7 @@ export default function LeadNurtureEmailPage() {
                 <label className="text-sm font-medium text-foreground" htmlFor="email">
                   Your Email Address *
                   <span className="ml-1 text-xs font-normal text-muted-foreground">
-                    (Receive your complete sequence + strategic recommendations)
+                    (Receive a complete sequence)
                   </span>
                 </label>
                 <input
