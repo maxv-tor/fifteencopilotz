@@ -112,7 +112,7 @@ export const footerColumns = [
   {
     title: "Campaigns",
     links: [
-      { label: "Email Sequences", href: "#", soon: true },
+      { label: "Email Squences", href: "/lead-nurture-email" },
       { label: "Social Ads Suite", href: "#", soon: true },
       { label: "Performance Funnels", href: "#", soon: true }
     ]

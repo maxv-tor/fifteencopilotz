@@ -16,7 +16,6 @@ const EXPANDED_SECTION_TITLES = new Set([
   "Resources",
   "Agentic Tools",
   "Content Creation",
-  "Content Creation Copilots",
 ]);
 
 export function Sidebar({ isOpen, onClose }: SidebarProps) {
