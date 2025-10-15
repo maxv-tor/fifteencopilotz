@@ -79,7 +79,11 @@ export default function LeadNurtureEmailPage() {
     const toStringValue = (value: FormDataEntryValue | null) =>
       typeof value === "string" ? value.trim() : "";
 
+    // Generate unique job ID for tracking
+    const jobId = crypto.randomUUID();
+
     const payload = {
+      jobId: jobId,
       companyName: toStringValue(formData.get("companyName")),
       productService: toStringValue(formData.get("productService")),
       industry: toStringValue(formData.get("industry")),
@@ -97,7 +101,7 @@ export default function LeadNurtureEmailPage() {
       timestamp: new Date().toISOString(),
     };
 
-    console.log("[form] Sending payload:", payload);
+    console.log("[form] Sending payload with job ID:", jobId, payload);
 
     const emailForMessage = payload.email || "your email";
 
@@ -155,8 +159,7 @@ export default function LeadNurtureEmailPage() {
         throw new Error(errorDetails);
       }
 
-      const jobId = responseBody.job_id;
-      console.log("[form] Job created:", jobId);
+      console.log("[form] Job created with ID:", jobId);
 
       form.reset();
       setSequenceComplexity("simple");

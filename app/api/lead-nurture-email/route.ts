@@ -19,7 +19,17 @@ export async function POST(request: NextRequest) {
 
     console.log("[proxy] Incoming payload:", payload);
 
+    const jobId = normalizeString(payload.jobId);
+
+    if (!jobId) {
+      return NextResponse.json(
+        { success: false, error: "Missing job_id in request." },
+        { status: 400 }
+      );
+    }
+
     const requiredFieldMap = {
+      job_id: jobId,
       company_name: normalizeString(payload.companyName),
       product_service: normalizeString(payload.productService),
       industry: normalizeString(payload.industry),
@@ -124,8 +134,7 @@ export async function POST(request: NextRequest) {
         message:
           (typeof responseJson?.message === "string" && responseJson.message) ||
           "Webhook accepted the payload.",
-        redirect_url: typeof responseJson?.redirect_url === "string" ? responseJson.redirect_url : undefined,
-        job_id: typeof responseJson?.job_id === "string" ? responseJson.job_id : undefined,
+        job_id: jobId,
         details: responseJson ?? null,
       },
       { status: 200 }
