@@ -10,47 +10,47 @@ type SubmissionState = "idle" | "pending" | "success" | "error";
 const sellingPoints = [
   {
     icon: Bot,
-    title: "AI-Powered Personalization",
+    title: "AI-Powered Personalization That Gets Results",
     description:
-      "Claude 4.5 Sonnet adapts proven email formulas to your specific brand, audience, and objectives for maximum resonance.",
+      "Claude-4.5 Sonnet transforms proven email formulas into personalized sequences tailored to your brand, audience, and goals - so every message hits home and inspires action.",
   },
   {
     icon: Target,
-    title: "Proven Frameworks",
+    title: "Battle-Tested Frameworks That Win Engagement",
     description:
-      "Built on battle-tested email formulas including Origin Story, Actionable Framework, and Transformation Spotlight.",
+      "Built on time-proven email formulas - Origin Story, Actionable Framework, and Transformation Spotlight - crafted from real-world data and human psychology that moves readers to respond.",
   },
   {
     icon: Heart,
-    title: "Relationship-First Approach",
+    title: "A Relationship-First Philosophy That Builds Loyalty",
     description:
-      "Every email designed to build know, like, and trust—not just sell—creating loyal subscribers who become customers.",
+      "Every email is designed to foster know, like, and trust-turning casual subscribers into loyal customers who buy because they believe in your brand.",
   },
 ];
 
 const deliverables = [
-  "Complete 5-email nurture sequence with strategic flow designed to build trust progressively",
-  "10+ optimized subject line variants for each email with psychological rationale",
-  "Email-specific strategic recommendations for sequencing, timing, and engagement optimization",
-  "Detailed copywriting guidance including hooks, storytelling elements, and CTAs",
+  "A complete 5-email nurture sequence with a strategic flow engineered to build trust and readiness step by step.",
+  "10+ optimized subject-line variations for each email—with psychological reasoning that lifts open rates.",
+  "Actionable strategy recommendations for sequence flow, timing, and engagement optimization.",
+  "Detailed copywriting guidance covering hooks, storytelling, structure, and high‑impact calls to action.",
 ];
 
 const howItWorks = [
   {
-    title: "Share your project details",
+    title: "Share Your Project Details",
     description:
-      "Tell us about your business, audience, brand voice, and email sequence goals so the AI can create a tailored strategy.",
+      "Tell us about your business, audience, tone of voice, and sequence goals—so the AI can craft a strategy tailored precisely to your brand.",
   },
   {
-    title: "AI crafts your sequence",
+    title: "AI Crafts Your Email Sequence",
     description:
-      "Claude 4.5 Sonnet uses proven formulas and templates to generate engaging, relationship-building emails optimized for your audience.",
+      "Claude-4.5 Sonnet applies proven frameworks and templates to create engaging, relationship-driven emails that resonate with your audience.",
   },
   {
-    title: "Refine & deploy",
+    title: "Refine & Launch",
     description: (
       <>
-        Review your complete email sequence, make adjustments with AI guidance, and get ready-to-send content that converts.
+        Review your ready-to-send email sequence, fine-tune it with AI guidance, and launch content engineered to convert and strengthen relationships.
       </>
     ),
   },
