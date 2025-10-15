@@ -42,7 +42,7 @@ export const navigationSections: NavigationSection[] = [
     ]
   },
   {
-    title: "Content Creation Copilots",
+    title: "Email Sequences",
     icon: SquarePen,
     items: [
        {
