@@ -39,7 +39,7 @@ const howItWorks = [
   {
     title: "Share Your Project Details",
     description:
-      "Tell us about your business, audience, tone of voice, and sequence goals—so the AI can craft a strategy tailored precisely to your brand.",
+      "Tell us about your business, audience, tone of voice, and sequence goals - so the AI can craft a strategy tailored precisely to your brand.",
   },
   {
     title: "AI Crafts Your Email Sequence",
@@ -48,11 +48,8 @@ const howItWorks = [
   },
   {
     title: "Refine & Launch",
-    description: (
-      <>
-        Review your ready-to-send email sequence, fine-tune it with AI guidance, and launch content engineered to convert and strengthen relationships.
-      </>
-    ),
+    description: 
+        "Review your ready-to-send email sequence, fine-tune it with AI guidance, and launch content engineered to convert and strengthen relationships.",
   },
 ];
 
@@ -268,10 +265,10 @@ export default function LeadNurtureEmailPage() {
         </span>
         <div className="space-y-2.5">
           <h1 className="text-center text-3xl font-bold text-foreground sm:text-4xl">
-            Create High-Converting Email Sequences That Build Trust & Drive Engagement
+            Turn Every Email Into a Trust-Building, Client-Winning Conversation
           </h1>
           <p className="text-center text-sm text-muted-foreground sm:text-base">
-            Share your brand and audience details — get a complete lead nurture email sequence designed to build relationships and convert subscribers into loyal customers.
+            Get a customized, AI‑powered nurture sequence that deepens relationships, earns attention, and transforms subscribers into loyal, long‑term customers.
           </p>
         </div>
       </header>
