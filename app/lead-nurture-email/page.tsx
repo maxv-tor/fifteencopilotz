@@ -314,18 +314,16 @@ export default function LeadNurtureEmailPage() {
                   autoComplete="organization"
                 />
               </div>
-              <div>
+              <div className="sm:col-span-2">
                 <label className="text-sm font-medium text-foreground" htmlFor="productService">
                   Product/Service *
                 </label>
-                <input
+                <textarea
                   id="productService"
                   name="productService"
-                  type="text"
                   required
                   placeholder="Describe what you offer"
-                  className="mt-1 h-10 w-full rounded-md border border-border bg-background px-3 text-sm outline-none focus:border-ring focus:ring-2 focus:ring-ring"
-                  autoComplete="off"
+                  className="mt-1 min-h-[90px] w-full rounded-md border border-border bg-background px-3 py-2 text-sm outline-none focus:border-ring focus:ring-2 focus:ring-ring"
                 />
               </div>
               <div>
@@ -342,7 +340,7 @@ export default function LeadNurtureEmailPage() {
                   autoComplete="off"
                 />
               </div>
-              <div className="sm:col-span-2">
+              <div>
                 <label className="text-sm font-medium text-foreground" htmlFor="email">
                   Your Email Address *
                   <span className="ml-1 text-xs font-normal text-muted-foreground">
