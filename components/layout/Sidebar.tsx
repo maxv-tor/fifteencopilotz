@@ -15,7 +15,7 @@ type SidebarProps = {
 const EXPANDED_SECTION_TITLES = new Set([
   "Resources",
   "Agentic Tools",
-  "Content Creation Copilots",
+  "Email Sequences",
 ]);
 
 export function Sidebar({ isOpen, onClose }: SidebarProps) {
@@ -82,7 +82,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
               {navigationSections.map((section, index) => {
                 const isExpanded = expandedSections.includes(index);
                 const displayTitle =
-                  section.title === "Email Sequence Copilots"
+                  section.title === "Email Sequences"
                     ? "Email Sequences"
                     : section.title;
 
