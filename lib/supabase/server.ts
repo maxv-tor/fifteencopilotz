@@ -100,3 +100,24 @@ export async function getLeadNurtureEmailReport(
 
   return data[0] ?? null;
 }
+
+export type ReEngagementEmailReportRow = {
+  job_id: string;
+  html_content: string;
+  updated_at: string;
+};
+
+export async function getReEngagementEmailReport(
+  jobId: string
+): Promise<ReEngagementEmailReportRow | null> {
+  const data = await supabaseFetch<ReEngagementEmailReportRow[]>({
+    path: "re_engagement_email_reports",
+    query: {
+      select: "job_id,html_content,updated_at",
+      job_id: `eq.${jobId}`,
+      limit: "1",
+    },
+  });
+
+  return data[0] ?? null;
+}

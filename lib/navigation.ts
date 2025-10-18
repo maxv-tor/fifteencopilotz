@@ -51,8 +51,7 @@ export const navigationSections: NavigationSection[] = [
       },
       {
         name: "Re-engagement Email",
-        href: "#",
-        soon: true
+        href: "/re-engagement-email"
       },
       {
         name: "Sales Email",

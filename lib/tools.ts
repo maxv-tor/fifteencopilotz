@@ -102,11 +102,12 @@ export const tools: Tool[] = [
   {
     name: "Re-engagement Email Copilot",
     description:
-      "Bring back dormant subscribers with sequences featuring relevant offers and propositions.",
-    href: "#",
+      "Your collaborative partner for winning back inactive subscribers with AI-powered email sequences designed to rebuild trust and reignite interest through strategic, relationship-first reconnection campaigns that respect subscriber autonomy.",
+    href: "/re-engagement-email",
     icon: Handshake,
     categories: ["copilot", "email"],
-    status: "coming-soon"
+    status: "available",
+    cta: "Open"
   },
   {
     name: "Sales Email Copilot",
